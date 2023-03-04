@@ -1,22 +1,26 @@
 const http = require('http');
-let path = require('path');
-let fs = require('fs');
+const url = require('url');
+const path = require('path');
+const fs = require('fs');
 
 let html;
 
-let server = http.createServer(function(request, response){
-	if (request.url == '/jokes') {
+let server = http.createServer(function(req, res){
+	if (req.url == '/jokes') {
 		getAllJokes(req, res);
 	}
-	else  if(request.url == '/jokes' && req.method == 'POST'){
+	else  if(req.url == '/jokes' && req.method == 'POST'){
 		addJokes(req, res);
 	}
-	else {
-		response.writeHead(404, {'Content-Type':'text/html'});
-		html = "<h3>Error 404 !!!</h3>"
-		response.end(html);
+	else if (req.url.startsWith('/like')) {
+		like(req, res);
 	}
-	});
+	else {
+		res.writeHead(404, {'Content-Type':'text/html'});
+		html = "<h3>Error 404 !!!</h3>"
+		res.end(html);
+	}
+});
 
 server.listen(3000);
 
@@ -38,9 +42,9 @@ function getAllJokes(req, res) {
  	});
  	res.end(JSON.stringify(allJokes));
 }
-
+73779
 function addJokes (req, res) {
- 	let data - '';
+ 	let data;
  	req.on('data', function(chunk){
  		data += chunk;
  	});
@@ -55,4 +59,10 @@ function addJokes (req, res) {
 
  		res.end();
  	})
+}
+
+function like(req, res) {
+	let params = url.parse(req.url, true).query;
+	let id = params.id;
+	console.log(id);
 }
