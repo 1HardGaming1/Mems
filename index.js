@@ -64,5 +64,25 @@ function addJokes (req, res) {
 function like(req, res) {
 	let params = url.parse(req.url, true).query;
 	let id = params.id;
-	console.log(id);
+	let dir = fs.readdirSync('data');
+	let fileName = path.join('data', id+'.json');
+	let file = fs.readFileSync(fileName);
+	let jokeJson = file.toString();
+	let joke = JSON.parse(jokeJson);
+	joke.likes++;
+	fs.writeFileSync(fileName, JSON.stringify(joke));
+	res.end();
+}
+
+function dislike(req, res) {    
+	let params = url.parse(req.url, true).query;
+	let id = params.id;
+	let dir = fs.readdirSync('data');
+	let fileName = path.join('data', id+'.json');
+	let file = fs.readFileSync(fileName);
+	let jokeJson = file.toString();
+	let joke = JSON.parse(jokeJson);
+	joke.likes++;
+	fs.writeFileSync(fileName, JSON.stringify(joke));
+	res.end();
 }
