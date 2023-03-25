@@ -6,6 +6,7 @@ const fs = require('fs');
 let html;
 
 let server = http.createServer(function(req, res){
+	res.setHeader('Access-Control-Allow-Origin', '*');
 	if (req.url == '/jokes') {
 		getAllJokes(req, res);
 	}
@@ -42,7 +43,7 @@ function getAllJokes(req, res) {
  	});
  	res.end(JSON.stringify(allJokes));
 }
-73779
+
 function addJokes (req, res) {
  	let data;
  	req.on('data', function(chunk){
